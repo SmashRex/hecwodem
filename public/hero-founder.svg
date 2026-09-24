@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2000" width="100%" height="100%">
+  <defs>
+    <!-- Studio backdrop textures and gradients matching Bolanle's August55 portrait -->
+    <radialGradient id="studioLight" cx="62%" cy="36%" r="65%" fx="60%" fy="30%">
+      <stop offset="0%" stop-color="#4A343A" stop-opacity="0.95" />
+      <stop offset="35%" stop-color="#3A242D" stop-opacity="1" />
+      <stop offset="70%" stop-color="#28161E" stop-opacity="1" />
+      <stop offset="100%" stop-color="#1B0F14" stop-opacity="1" />
+    </radialGradient>
+
+    <!-- Warm soft rim light -->
+    <radialGradient id="rimLight" cx="65%" cy="30%" r="35%">
+      <stop offset="0%" stop-color="#C8A66A" stop-opacity="0.22" />
+      <stop offset="60%" stop-color="#B77C83" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#3A1D29" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Sage green atmospheric reflection matching Bolanle's attire -->
+    <radialGradient id="sageGlow" cx="60%" cy="58%" r="42%">
+      <stop offset="0%" stop-color="#849474" stop-opacity="0.28" />
+      <stop offset="50%" stop-color="#556648" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#23141B" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Grain filter for photographic tactile depth -->
+    <filter id="photographicGrain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.05 0" />
+      <feBlend in="SourceGraphic" in2="noise" mode="soft-light" />
+    </filter>
+  </defs>
+
+  <!-- Deep Textured Backdrop Layer -->
+  <rect width="1600" height="2000" fill="url(#studioLight)" />
+  <rect width="1600" height="2000" fill="url(#rimLight)" />
+  <rect width="1600" height="2000" fill="url(#sageGlow)" />
+  
+  <!-- Tactile Studio Wall Depth -->
+  <g opacity="0.4" filter="url(#photographicGrain)">
+    <circle cx="980" cy="680" r="420" fill="#3D2932" />
+    <circle cx="1020" cy="520" r="260" fill="#4D333D" opacity="0.6" />
+  </g>
+
+  <!-- Bolanle Titilayo Adesope - Graceful Portrait Composition Silhouette -->
+  <!-- Framed in upper-right center, matching the August55 Media portrait posture -->
+  <g transform="translate(140, 40)" opacity="0.88">
+    <!-- Gentle back aura -->
+    <ellipse cx="880" cy="720" rx="340" ry="460" fill="#542A3A" opacity="0.4" />
+    
+    <!-- Head and styled hair aura -->
+    <circle cx="880" cy="460" r="145" fill="#6A4340" opacity="0.55" />
+    <path d="M780,440 C780,320 980,320 980,440 C980,460 960,520 940,550 C900,570 860,570 820,550 Z" fill="#8C6352" opacity="0.6" />
+    
+    <!-- Face warm illumination zone -->
+    <ellipse cx="890" cy="480" rx="85" ry="105" fill="#754738" opacity="0.75" />
+    
+    <!-- Glasses line subtle accent -->
+    <ellipse cx="875" cy="460" rx="30" ry="18" fill="none" stroke="#C8A66A" stroke-width="2.5" opacity="0.5" />
+    <ellipse cx="925" cy="465" rx="30" ry="18" fill="none" stroke="#C8A66A" stroke-width="2.5" opacity="0.5" />
+    <line x1="905" y1="462" x2="895" y2="462" stroke="#C8A66A" stroke-width="2.5" opacity="0.5" />
+
+    <!-- Warm joyful smile curve -->
+    <path d="M875,525 Q895,545 918,528" fill="none" stroke="#FBF8F4" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+
+    <!-- Sage green pleated dress & jacket shoulders (August55 styling) -->
+    <path d="M680,680 C740,600 820,580 880,590 C940,580 1020,600 1080,680 C1140,760 1160,940 1160,1200 C1160,1500 1140,1900 1100,2000 L660,2000 C620,1900 600,1500 600,1200 C600,940 620,760 680,680 Z" fill="#6B7E5C" opacity="0.55" />
+
+    <!-- Dress lapel & diagonal pleated drape line -->
+    <path d="M830,590 L980,820 L880,920 L780,720 Z" fill="#7B8F6B" opacity="0.6" />
+    <line x1="770" y1="780" x2="880" y2="920" stroke="#95AA85" stroke-width="3" opacity="0.4" />
+    
+    <!-- Subtle delicate floral applique accents -->
+    <circle cx="830" cy="740" r="14" fill="#A4B894" opacity="0.6" />
+    <circle cx="848" cy="760" r="10" fill="#A4B894" opacity="0.5" />
+    <circle cx="820" cy="770" r="9" fill="#A4B894" opacity="0.5" />
+
+    <!-- Clasped hands posture -->
+    <ellipse cx="910" cy="1080" rx="75" ry="45" fill="#784C3C" opacity="0.65" />
+    <ellipse cx="890" cy="1100" rx="65" ry="40" fill="#6A3F32" opacity="0.65" />
+
+    <!-- Vertical knife pleats styling -->
+    <g stroke="#566948" stroke-width="1.8" opacity="0.4">
+      <line x1="700" y1="1200" x2="680" y2="1950" />
+      <line x1="740" y1="1180" x2="730" y2="1950" />
+      <line x1="780" y1="1160" x2="775" y2="1950" />
+      <line x1="820" y1="1150" x2="820" y2="1950" />
+      <line x1="860" y1="1150" x2="865" y2="1950" />
+      <line x1="900" y1="1150" x2="910" y2="1950" />
+      <line x1="940" y1="1160" x2="955" y2="1950" />
+      <line x1="980" y1="1180" x2="1000" y2="1950" />
+      <line x1="1020" y1="1200" x2="1045" y2="1950" />
+    </g>
+  </g>
+
+  <!-- Editorial Attribution Watermark (bottom right) -->
+  <text x="1440" y="1930" text-anchor="end" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" fill="#C8A66A" opacity="0.4" letter-spacing="1">August55 Media · Bolanle Titilayo Adesope</text>
+</svg>
