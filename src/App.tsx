@@ -3,17 +3,39 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HeroSection } from './components/HeroSection.tsx';
 import { MeetTheFounderSection } from './components/MeetTheFounderSection.tsx';
 import { AboutHecwodemSection } from './components/AboutHecwodemSection.tsx';
 import { WhatTheMinistryDoesSection } from './components/WhatTheMinistryDoesSection.tsx';
 import { WritingsSection } from './components/WritingsSection.tsx';
+import { FounderStoryPage } from './components/FounderStoryPage.tsx';
 
 export default function App() {
   // Support dynamic brand logo override if user drops a replacement SVG/image in preview
   const [customLogoSrc, setCustomLogoSrc] = useState<string | undefined>(undefined);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+
+  // Lightweight, reliable client-side page routing without large external dependencies
+  const [currentRoute, setCurrentRoute] = useState<string>(() => {
+    return window.location.pathname || '/';
+  });
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentRoute(window.location.pathname || '/');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  const navigateTo = (path: string) => {
+    window.history.pushState({}, '', path);
+    setCurrentRoute(path);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   const showToast = (message: string) => {
     setFeedbackMessage(message);
@@ -51,20 +73,40 @@ export default function App() {
     }
   };
 
+  // Render dedicated founder story page when navigating to /the-story-of-bt-adesope
+  if (currentRoute === '/the-story-of-bt-adesope') {
+    return (
+      <FounderStoryPage
+        onBackToHome={() => navigateTo('/')}
+        onDiscoverHecwodem={() => {
+          navigateTo('/');
+          setTimeout(() => {
+            const aboutEl = document.getElementById('about');
+            if (aboutEl) {
+              aboutEl.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 120);
+        }}
+        logoSrc={customLogoSrc || '/images/hecwodem-logo.svg'}
+        photoSrc="/images/founder-story-portrait.jpg"
+      />
+    );
+  }
+
   return (
     <main
-      className="min-h-screen bg-[#3A1D29] text-[#FBF8F4]"
+      className="min-h-screen bg-[#25265C] text-[#FBF8F3]"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
     >
       {/* 
         Section 01: "Welcome to HECWODEM"
-        Revised logo-as-tonal-watermark editorial hero (untouched).
+        Refined opening visual experience in Royal Indigo.
       */}
       <HeroSection
         logoSrc={customLogoSrc || '/images/hecwodem-logo.svg'}
-        watermarkOpacity={0.20}
-        watermarkOpacityMobile={0.16}
+        watermarkOpacity={0.10}
+        watermarkOpacityMobile={0}
         layoutVariant="centered"
         onExploreClick={() => showToast('Section 01: "Explore HECWODEM" clicked')}
         onMeetFounderClick={scrollToFounder}
@@ -74,12 +116,12 @@ export default function App() {
 
       {/* 
         Section 02: "Meet the Founder"
-        Editorial introduction for Bolanle Titilayo Adesope.
+        Editorial introduction for B.T. Adesope.
       */}
       <MeetTheFounderSection
         photoSrc="/images/hero-founder.jpg"
-        photoAlt="Bolanle Titilayo Adesope, founder of HECWODEM"
-        onReadStoryClick={() => showToast('Meet the Founder: "Read Her Story" clicked')}
+        photoAlt="B.T. Adesope, founder of HECWODEM"
+        onReadStoryClick={() => navigateTo('/the-story-of-bt-adesope')}
       />
 
       {/* 
@@ -113,7 +155,7 @@ export default function App() {
         <div
           role="status"
           aria-live="polite"
-          className="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-[6px] bg-[#542A3A]/95 text-[#FBF8F4] text-[13px] border border-[#FBF8F4]/20 shadow-lg backdrop-blur-sm transition-opacity duration-300"
+          className="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-[6px] bg-[#121332]/95 text-[#FBF8F3] text-[13px] border border-[#FBF8F3]/20 shadow-lg backdrop-blur-sm transition-opacity duration-300"
         >
           {feedbackMessage}
         </div>

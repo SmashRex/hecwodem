@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
 
 export interface NavItem {
   label: string;
@@ -16,6 +17,10 @@ interface MobileMenuProps {
   navItems: NavItem[];
   counsellingLabel: string;
   onCounsellingClick?: () => void;
+  onNavigate?: (href: string) => void;
+  accentText?: string;
+  accentBorder?: string;
+  ctaBg?: string;
 }
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({
@@ -24,15 +29,22 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   navItems,
   counsellingLabel,
   onCounsellingClick,
+  onNavigate,
+  accentText = '#7C84E8',
+  accentBorder = '#5964D8',
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const isStoryPage =
+    typeof window !== 'undefined' &&
+    window.location.pathname === '/the-story-of-bt-adesope';
 
   // Focus management and Escape key dismissal
   useEffect(() => {
     if (!isOpen) return;
 
-    // Trap focus inside menu when opened
+    // Prevent body scroll when menu drawer is open
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
@@ -77,77 +89,142 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
   if (!isOpen) return null;
 
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    onClose();
+
+    if (onNavigate) {
+      e.preventDefault();
+      onNavigate(href);
+      return;
+    }
+
+    if (isStoryPage) {
+      e.preventDefault();
+      const targetHash = href.startsWith('#') ? href : `#${href.replace(/^\//, '')}`;
+      window.history.pushState({}, '', `/${targetHash}`);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      if (targetHash && targetHash !== '#home') {
+        setTimeout(() => {
+          const el = document.getElementById(targetHash.replace('#', ''));
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      }
+      return;
+    }
+
+    // On homepage, let anchor link jump smoothly
+    if (href.startsWith('#')) {
+      const targetId = href.substring(1);
+      const el = document.getElementById(targetId);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const handleWordmarkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    onClose();
+    if (isStoryPage) {
+      e.preventDefault();
+      window.history.pushState({}, '', '/');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  };
+
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-label="Mobile Navigation Menu"
       ref={menuRef}
-      className="fixed inset-0 z-50 flex flex-col bg-[#3A1D29]/95 backdrop-blur-md text-[#FBF8F4] transition-all duration-300 ease-out"
+      className="fixed inset-0 z-50 flex justify-end"
     >
-      {/* Top bar with wordmark & accessible close control */}
-      <div className="flex items-center justify-between px-6 py-6 border-b border-[#FBF8F4]/10">
-        <span
-          className="font-serif text-2xl tracking-normal text-[#FBF8F4]"
-          style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
-        >
-          HECWODEM
-        </span>
-        <button
-          ref={closeButtonRef}
-          type="button"
-          onClick={onClose}
-          aria-label="Close navigation menu"
-          className="p-2.5 -mr-2 text-[#FBF8F4] hover:text-[#C8A66A] rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-[#C8A66A] focus-visible:outline-offset-2"
-        >
-          {/* 1.5-2px line SVG close icon (no emojis, no clip-art) */}
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+      {/* Dimmed backdrop overlay */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+        aria-hidden="true"
+        onClick={onClose}
+      />
+
+      {/* Slide-in drawer with Royal Indigo styling and restrained width */}
+      <div
+        className="relative z-10 w-full max-w-[340px] xs:max-w-[360px] sm:max-w-[380px] h-full flex flex-col justify-between bg-[#25265C] border-l border-[#5964D8]/20 shadow-2xl text-[#FBF8F3] overflow-y-auto"
+        style={{ backgroundColor: '#25265C' }}
+      >
+        {/* Top bar with wordmark & accessible close control */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-[#FBF8F3]/10 shrink-0">
+          <a
+            href={isStoryPage ? '/' : '#home'}
+            onClick={handleWordmarkClick}
+            className="font-serif text-2xl tracking-normal text-[#FBF8F3] hover:text-[#7C84E8] transition-colors focus-visible:outline-2 rounded-sm"
+            style={{ fontFamily: "'Instrument Serif', Georgia, serif", outlineColor: accentBorder }}
           >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
+            HECWODEM
+          </a>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={onClose}
+            aria-label="Close navigation menu"
+            className="p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#FBF8F3] hover:text-[#7C84E8] hover:bg-white/5 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+            style={{ outlineColor: accentBorder }}
+          >
+            <X className="w-5 h-5" strokeWidth={2} aria-hidden="true" />
+          </button>
+        </div>
 
-      {/* Navigation Links list */}
-      <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col justify-between">
-        <ul className="space-y-4">
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <a
-                href={item.href}
-                onClick={onClose}
-                className="block py-2 text-xl font-serif tracking-wide text-[#FBF8F4] hover:text-[#C8A66A] transition-colors focus-visible:outline-2 focus-visible:outline-[#C8A66A] rounded-sm"
-                style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Navigation Links list */}
+        <nav className="flex-1 px-5 py-6 overflow-y-auto" aria-label="Mobile Navigation Links">
+          <ul className="space-y-1">
+            {navItems.map((item) => {
+              const isHomeActive = !isStoryPage && item.href === '#home';
+              const linkHref = isStoryPage ? `/${item.href}` : item.href;
 
-        {/* Primary CTA in mobile overlay */}
-        <div className="pt-8 border-t border-[#FBF8F4]/10 mt-6">
+              return (
+                <li key={item.label}>
+                  <a
+                    href={linkHref}
+                    onClick={(e) => handleLinkClick(e, item.href)}
+                    className={`block py-2.5 px-3 text-[17px] font-medium font-sans tracking-normal rounded-md transition-all focus-visible:outline-2 ${
+                      isHomeActive
+                        ? 'text-[#7C84E8] bg-white/5'
+                        : 'text-[#FBF8F3]/90 hover:text-[#FBF8F3] hover:bg-white/5'
+                    }`}
+                    style={{
+                      outlineColor: accentBorder,
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Primary CTA in mobile drawer */}
+        <div className="p-6 border-t border-[#FBF8F3]/10 bg-[#1A1B44]/70 shrink-0">
           <button
             type="button"
             onClick={() => {
               onClose();
               onCounsellingClick?.();
             }}
-            className="w-full py-3.5 px-6 rounded-[6px] bg-[#542A3A] hover:bg-[#43202E] text-[#FBF8F4] text-sm font-medium tracking-wide transition-colors shadow-sm focus-visible:outline-2 focus-visible:outline-[#C8A66A] focus-visible:outline-offset-2"
+            className="w-full py-3.5 px-6 min-h-[44px] rounded-[6px] text-white text-[14px] font-medium tracking-normal transition-all duration-300 border shadow-md active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2"
+            style={{
+              background: 'linear-gradient(135deg, #5964D8 0%, #444FC0 100%)',
+              borderColor: '#7C84E8',
+              outlineColor: accentBorder,
+            }}
           >
             {counsellingLabel}
           </button>
         </div>
-      </nav>
+      </div>
     </div>
   );
 };
