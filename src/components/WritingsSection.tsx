@@ -36,57 +36,10 @@ export interface WritingsSectionProps {
 }
 
 /*
-  PLACEHOLDER CONTENT FOR DEVELOPMENT — REPLACE WITH REAL PUBLISHED WRITINGS
-  Demonstrates optional category, author, date, and image fields gracefully.
-  No invented Scripture quotes, statistics, or attributed claims.
+  Published writings collection. Defaults to empty until official writings are published.
+  When empty, the section renders the dignified 'New reflections are coming soon' empty state.
 */
-export const DEFAULT_WRITINGS: Writing[] = [
-  {
-    id: 'writing-1',
-    title: 'On Waiting Well',
-    slug: 'on-waiting-well',
-    excerpt:
-      'Learning that seasons of quiet and anticipation are rarely wasted time, but often where the deepest roots are formed.',
-    category: 'Reflection',
-    author: {
-      name: 'Bolanle',
-      role: 'Founder, HECWODEM',
-    },
-    date: 'Autumn Reflection',
-    featured: true,
-    published: true,
-  },
-  {
-    id: 'writing-2',
-    title: 'Quiet Faith in Loud Seasons',
-    slug: 'quiet-faith-in-loud-seasons',
-    excerpt:
-      'Finding daily stillness and grounded perspective when everyday demands and expectations compete for attention.',
-    category: 'Faith & Life',
-    published: true,
-  },
-  {
-    id: 'writing-3',
-    title: 'Anchored Through Change',
-    slug: 'anchored-through-change',
-    excerpt:
-      'How shifting circumstances can become invitations to anchor our trust in something firmer than the moment.',
-    category: 'Encouragement',
-    author: {
-      name: 'HECWODEM Team',
-    },
-    published: true,
-  },
-  {
-    id: 'writing-4',
-    title: 'The Discipline of Showing Up',
-    slug: 'the-discipline-of-showing-up',
-    excerpt:
-      'Small, faithful steps taken day by day create a steady foundation that grand gestures cannot replicate.',
-    category: 'Spiritual Growth',
-    published: true,
-  },
-];
+export const DEFAULT_WRITINGS: Writing[] = [];
 
 export const WritingsSection: React.FC<WritingsSectionProps> = ({
   writings = DEFAULT_WRITINGS,
@@ -274,16 +227,10 @@ export const WritingsSection: React.FC<WritingsSectionProps> = ({
                       {/* Featured Title */}
                       <h3
                         id={`writing-title-${featuredWriting.id}`}
-                        className="font-serif text-[32px] sm:text-[42px] lg:text-[48px] leading-[1.1] text-[#3A1D29] tracking-tight mb-5 text-balance group-hover:text-[#542A3A] transition-colors"
+                        className="font-serif text-[32px] sm:text-[42px] lg:text-[48px] leading-[1.1] text-[#3A1D29] tracking-tight mb-5 text-balance"
                         style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
                       >
-                        <a
-                          href={`#writing-${featuredWriting.slug}`}
-                          onClick={(e) => handleArticleClick(e, featuredWriting)}
-                          className="focus-visible:outline-2 focus-visible:outline-[#C8A66A] rounded-sm"
-                        >
-                          {featuredWriting.title}
-                        </a>
+                        {featuredWriting.title}
                       </h3>
 
                       {/* Excerpt */}
@@ -291,7 +238,7 @@ export const WritingsSection: React.FC<WritingsSectionProps> = ({
                         {featuredWriting.excerpt}
                       </p>
 
-                      {/* Author Byline & CTA Link */}
+                      {/* Author Byline */}
                       <div className="pt-5 border-t border-[#3A1D29]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                         {/* Author if present */}
                         {featuredWriting.author ? (
@@ -308,32 +255,6 @@ export const WritingsSection: React.FC<WritingsSectionProps> = ({
                         ) : (
                           <div />
                         )}
-
-                        {/* Read Full Writing Link */}
-                        <a
-                          href={`#writing-${featuredWriting.slug}`}
-                          onClick={(e) => handleArticleClick(e, featuredWriting)}
-                          className="inline-flex items-center gap-2.5 text-[15px] font-medium text-[#3A1D29] group-hover:text-[#542A3A] transition-colors py-1 focus-visible:outline-2 focus-visible:outline-[#C8A66A] rounded-sm"
-                          aria-label={`Read the full writing: ${featuredWriting.title}`}
-                        >
-                          <span className="relative">
-                            Read the full writing
-                            <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-[#C8A66A] transition-all duration-300 group-hover:w-full" />
-                          </span>
-                          <svg
-                            className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform duration-200 text-[#C8A66A]"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.75"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                            <polyline points="12 5 19 12 12 19" />
-                          </svg>
-                        </a>
                       </div>
 
                     </div>
@@ -406,16 +327,10 @@ export const WritingsSection: React.FC<WritingsSectionProps> = ({
                           {/* Title */}
                           <h3
                             id={`writing-title-${item.id}`}
-                            className="font-serif text-[24px] sm:text-[28px] leading-[1.18] text-[#3A1D29] tracking-tight mb-3 group-hover:text-[#542A3A] transition-colors"
+                            className="font-serif text-[24px] sm:text-[28px] leading-[1.18] text-[#3A1D29] tracking-tight mb-3"
                             style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
                           >
-                            <a
-                              href={`#writing-${item.slug}`}
-                              onClick={(e) => handleArticleClick(e, item)}
-                              className="focus-visible:outline-2 focus-visible:outline-[#C8A66A] rounded-sm"
-                            >
-                              {item.title}
-                            </a>
+                            {item.title}
                           </h3>
 
                           {/* Excerpt */}
@@ -424,7 +339,7 @@ export const WritingsSection: React.FC<WritingsSectionProps> = ({
                           </p>
                         </div>
 
-                        {/* Footer: Author (if present) & Read Arrow */}
+                        {/* Footer: Author (if present) */}
                         <div className="pt-4 border-t border-[#3A1D29]/5 flex items-center justify-between">
                           {item.author ? (
                             <span className="text-[12px] font-serif italic text-[#827577]">
@@ -433,28 +348,6 @@ export const WritingsSection: React.FC<WritingsSectionProps> = ({
                           ) : (
                             <span />
                           )}
-
-                          <a
-                            href={`#writing-${item.slug}`}
-                            onClick={(e) => handleArticleClick(e, item)}
-                            className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[#3A1D29] group-hover:text-[#C8A66A] transition-colors py-1 focus-visible:outline-2 focus-visible:outline-[#C8A66A] rounded-sm"
-                            aria-label={`Read: ${item.title}`}
-                          >
-                            <span>Read</span>
-                            <svg
-                              className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-200 text-[#C8A66A]"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.75"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <line x1="5" y1="12" x2="19" y2="12" />
-                              <polyline points="12 5 19 12 12 19" />
-                            </svg>
-                          </a>
                         </div>
                       </article>
                     ))}
@@ -468,34 +361,36 @@ export const WritingsSection: React.FC<WritingsSectionProps> = ({
           {/* =========================================================================
               CLOSING SECTION CTA
               "Explore All Writings →"
-              Understated text-link invitation with champagne underline and SVG arrow.
+              Rendered only when published writings exist to explore.
           ========================================================================== */}
-          <div className="pt-10 sm:pt-14 mt-16 sm:mt-20 border-t border-[#3A1D29]/10 flex items-center justify-between">
-            <a
-              href="#all-writings"
-              onClick={handleCtaClick}
-              className="group inline-flex items-center gap-3 text-[16px] sm:text-[17px] font-medium text-[#3A1D29] hover:text-[#542A3A] transition-colors py-2 focus-visible:outline-2 focus-visible:outline-[#C8A66A] focus-visible:outline-offset-4 rounded-sm"
-              aria-label="Explore All Writings"
-            >
-              <span className="relative">
-                Explore All Writings
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-[#C8A66A] transition-all duration-300 group-hover:w-full" />
-              </span>
-              <svg
-                className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-200 text-[#C8A66A]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+          {publishedWritings.length > 0 && (
+            <div className="pt-10 sm:pt-14 mt-16 sm:mt-20 border-t border-[#3A1D29]/10 flex items-center justify-between">
+              <a
+                href="#all-writings"
+                onClick={handleCtaClick}
+                className="group inline-flex items-center gap-3 text-[16px] sm:text-[17px] font-medium text-[#3A1D29] hover:text-[#542A3A] transition-colors py-2 focus-visible:outline-2 focus-visible:outline-[#C8A66A] focus-visible:outline-offset-4 rounded-sm"
+                aria-label="Explore All Writings"
               >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-          </div>
+                <span className="relative">
+                  Explore All Writings
+                  <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-[#C8A66A] transition-all duration-300 group-hover:w-full" />
+                </span>
+                <svg
+                  className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-200 text-[#C8A66A]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          )}
 
         </div>
       </div>

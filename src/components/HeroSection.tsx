@@ -9,19 +9,19 @@ import { Navbar } from './Navbar.tsx';
 import { ScrollIndicator } from './ScrollIndicator.tsx';
 
 export interface HeroSectionProps {
-  /** Path to the HECWODEM brand logo SVG asset */
+  /** Path to the founder photograph asset */
+  photoSrc?: string;
+  /** Accessible description for founder photograph */
+  photoAlt?: string;
+  /** Path to the HECWODEM brand logo SVG asset (kept invisible per user instruction) */
   logoSrc?: string;
   /** Accessible description of the HECWODEM brand mark */
   logoAlt?: string;
-  /** Tunable opacity for the tonal watermark logo on desktop */
+  /** Watermark opacity - explicitly 0 per user instruction */
   watermarkOpacity?: number;
-  /** Tunable opacity for the tonal watermark logo on mobile (0 = hidden per design system) */
+  /** Tunable opacity for mobile watermark (default 0) */
   watermarkOpacityMobile?: number;
-  /** Tunable CSS filter applied to the watermark */
-  watermarkFilter?: string;
-  /** Tunable CSS mix-blend-mode for the watermark logo */
-  watermarkBlendMode?: React.CSSProperties['mixBlendMode'];
-  /** Layout variant: 'centered' (default) or 'split' */
+  /** Layout variant */
   layoutVariant?: 'split' | 'centered';
   /** Interactive callbacks */
   onExploreClick?: () => void;
@@ -31,13 +31,8 @@ export interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  logoSrc = '/images/hecwodem-logo.svg',
-  logoAlt = 'HECWODEM ministry seal, shown as a background watermark',
-  watermarkOpacity = 0.10,
-  watermarkOpacityMobile = 0,
-  watermarkFilter = 'grayscale(100%) brightness(0.85) contrast(0.8)',
-  watermarkBlendMode = 'screen',
-  layoutVariant = 'centered',
+  photoSrc = '/images/hero-founder.jpg',
+  photoAlt = 'B.T. Adesope, founder of HECWODEM',
   onExploreClick,
   onMeetFounderClick,
   onBookCounsellingClick,
@@ -49,344 +44,305 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       return;
     }
 
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth',
-    });
+    const founderEl = document.getElementById('about-founder');
+    if (founderEl) {
+      founderEl.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth',
+      });
+    }
   };
 
-  const isCentered = layoutVariant === 'centered';
+  const handleExploreClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onExploreClick) {
+      onExploreClick();
+      return;
+    }
+    const aboutEl = document.getElementById('about');
+    if (aboutEl) {
+      aboutEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleFounderClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onMeetFounderClick) {
+      onMeetFounderClick();
+      return;
+    }
+    const founderEl = document.getElementById('about-founder');
+    if (founderEl) {
+      founderEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section
       id="home"
       aria-label="Welcome to HECWODEM"
-      className="relative isolate min-h-screen min-h-[100svh] w-full overflow-hidden text-[#FBF8F3] flex flex-col justify-between"
-      style={
-        {
-          /* Royal Indigo Locked Atmosphere tokens */
-          background: 'radial-gradient(circle at 50% 12%, #343777 0%, #25265C 55%, #181940 100%)',
-          '--hero-accent': '#5964D8',
-          '--hero-accent-soft': '#7C84E8',
-          '--hero-feminine': '#D09AA5',
-          '--hero-champagne': '#C7A76A',
-          '--hero-bg-deep': '#25265C',
-          '--hero-bg-secondary': '#343777',
-        } as React.CSSProperties
-      }
+      className="relative isolate min-h-screen min-h-[100svh] w-full overflow-hidden text-white flex flex-col justify-between"
+      style={{
+        backgroundColor: '#0C0B14',
+        backgroundImage: `
+          radial-gradient(circle at 25% 30%, rgba(95, 60, 160, 0.22) 0%, transparent 55%),
+          radial-gradient(circle at 80% 65%, rgba(65, 40, 110, 0.18) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 15%, #181329 0%, #100E1C 55%, #0A0912 100%)
+        `,
+      }}
     >
       {/* =========================================================
-          LAYER 0: EDITORIAL BACKGROUND & WATERMARK (z-0)
+          LAYER 0: ATMOSPHERIC AMBIENT GLOWS (Watermark explicitly omitted per instruction)
       ========================================================== */}
       <div
         aria-hidden="true"
         role="presentation"
         className="pointer-events-none absolute inset-0 -z-10 select-none overflow-hidden"
       >
-        {/* Ambient atmospheric fields with Royal Indigo tones */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[950px] h-[700px] lg:h-[950px] rounded-full bg-[#343777]/35 blur-3xl opacity-75" />
-        
-        {/* Primary atmospheric light glow */}
+        {/* Soft violet illumination bloom behind the headline */}
         <div
-          className="absolute top-20 left-1/4 w-[440px] h-[440px] rounded-full blur-3xl pointer-events-none"
-          style={{ backgroundColor: 'rgba(89, 100, 216, 0.35)' }}
+          className="absolute top-24 left-10 sm:left-1/6 w-[450px] sm:w-[650px] h-[450px] sm:h-[650px] rounded-full blur-[130px] pointer-events-none"
+          style={{ backgroundColor: 'rgba(138, 92, 246, 0.12)' }}
         />
 
-        {/* Secondary ambient light glow on opposite quadrant with feminine accent warmth */}
+        {/* Deep magenta/purple reflection behind the founder card */}
         <div
-          className="absolute bottom-24 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none"
-          style={{ backgroundColor: 'rgba(208, 154, 165, 0.22)' }}
+          className="absolute top-1/3 right-10 w-[400px] lg:w-[550px] h-[400px] lg:h-[550px] rounded-full blur-[140px] pointer-events-none"
+          style={{ backgroundColor: 'rgba(90, 50, 140, 0.15)' }}
         />
 
-        {/* Central backlight aura directly centered behind the logo watermark and text */}
+        {/* Vignette edge containment */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[900px] h-[600px] md:h-[900px] rounded-full blur-3xl pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(89, 100, 216, 0.38) 0%, transparent 70%)',
-          }}
-        />
-
-        {/* 
-          WATERMARK POSITIONING
-          Centered Mode: Dead-center on both axes, scaled up significantly behind the text stack.
-          Symmetric overflow is natural, intentional, and contained cleanly by overflow-hidden.
-          Mobile view: Completely hidden per design specification to preserve pristine legibility.
-        */}
-        {isCentered ? (
-          <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none select-none overflow-hidden">
-            <div
-              className="
-                relative
-                md:w-[860px] md:h-[875px]
-                lg:w-[1060px] lg:h-[1078px]
-                xl:w-[1260px] xl:h-[1281px]
-                2xl:w-[1460px] 2xl:h-[1485px]
-                shrink-0
-                transition-transform duration-700 ease-out
-              "
-              style={
-                {
-                  '--logo-opacity-desktop': watermarkOpacity,
-                } as React.CSSProperties
-              }
-            >
-              <img
-                src={logoSrc}
-                alt={logoAlt}
-                aria-hidden="true"
-                role="presentation"
-                loading="eager"
-                decoding="async"
-                draggable={false}
-                className="w-full h-full object-contain pointer-events-none select-none watermark-element"
-                style={{
-                  filter: `${watermarkFilter} drop-shadow(0 0 45px rgba(89, 100, 216, 0.38))`,
-                  mixBlendMode: watermarkBlendMode,
-                }}
-              />
-            </div>
-          </div>
-        ) : (
-          /* Split mode: right-anchored watermark */
-          <div
-            className="
-              hidden lg:block absolute pointer-events-none select-none
-              lg:top-[53%] lg:-translate-y-1/2 lg:right-6 lg:w-[380px] lg:h-[386px]
-              xl:top-[53%] xl:-translate-y-1/2 xl:right-9 xl:w-[460px] xl:h-[468px]
-              2xl:top-[53%] 2xl:-translate-y-1/2 2xl:right-12 2xl:w-[540px] 2xl:h-[550px]
-            "
-            style={
-              {
-                '--logo-opacity-desktop': watermarkOpacity,
-              } as React.CSSProperties
-            }
-          >
-            <img
-              src={logoSrc}
-              alt={logoAlt}
-              aria-hidden="true"
-              role="presentation"
-              loading="eager"
-              decoding="async"
-              draggable={false}
-              className="w-full h-full object-contain pointer-events-none select-none watermark-element"
-              style={{
-                filter: `${watermarkFilter} drop-shadow(0 0 45px rgba(89, 100, 216, 0.38))`,
-                mixBlendMode: watermarkBlendMode,
-              }}
-            />
-          </div>
-        )}
-
-        {/* 
-          SOFT RADIAL SCRIM / CONTRAST LAYER
-          Subtle darkening centered directly behind the text stack to guarantee 100% crisp legibility
-          for Warm Ivory typography without muting the bold logo watermark underneath.
-        */}
-        <div
-          className="
-            absolute inset-0 pointer-events-none
-            bg-[radial-gradient(circle_at_center,rgba(37,38,92,0.50)_0%,rgba(37,38,92,0.30)_50%,rgba(37,38,92,0.05)_80%,transparent_100%)]
-          "
+          className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_55%,rgba(6,5,10,0.85)_100%)]"
         />
       </div>
 
       {/* =========================================================
-          LAYER 1: TRANSPARENT NAVBAR (Strict z-50)
+          LAYER 1: TOP NAVIGATION BAR
       ========================================================== */}
-      <div style={{ paddingTop: '18px' }}>
+      <div>
         <Navbar
           onCounsellingClick={onBookCounsellingClick}
-          accentText="#7C84E8"
-          accentBorder="#5964D8"
-          accentPrimary="#5964D8"
-          activeDotColor="#7C84E8"
-          ctaBg="rgba(89, 100, 216, 0.20)"
-          ctaBorder="#5964D8"
-          ctaGlow="rgba(89, 100, 216, 0.38)"
+          accentText="#C4A7FB"
+          accentBorder="#C4A7FB"
+          activeDotColor="#C4A7FB"
+          ctaBg="#C4A7FB"
         />
       </div>
 
       {/* =========================================================
-          LAYER 2: MAIN HERO CONTENT WRAPPER (Strict z-20)
+          LAYER 2: MAIN HERO BODY (REPLICATING VARIATION 11 EXACTLY)
       ========================================================== */}
-      <div className="relative z-20 flex-1 flex items-center justify-center w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 lg:py-14">
-        {isCentered ? (
-          /* =======================================================
-             FULLY CENTERED HERO COMPOSITION
-          ======================================================== */
-          <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center animate-hero-entrance">
-            {/* Large Serif Heading: Warm Ivory (#FBF8F3) - lead visual element */}
-            <h1
-              className="text-[44px] leading-[1.04] xs:text-[50px] sm:text-[68px] lg:text-[80px] xl:text-[86px] font-serif font-normal text-[#FBF8F3] tracking-tight mb-5 sm:mb-6 text-balance"
-              style={{
-                fontFamily: "'Instrument Serif', Georgia, serif",
-                lineHeight: 1.04,
-              }}
-            >
-              Welcome to HECWODEM
+      <div className="relative z-20 flex-1 flex items-center justify-center w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-6 sm:py-10 lg:py-12">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-16 items-center">
+          
+          {/* -----------------------------------------------------
+              LEFT COLUMN: FAITH FOR WOMEN EDITORIAL DISPLAY
+          ------------------------------------------------------ */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
+            {/* Eyebrow: ESTABLISHED 2001 with leading rule */}
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
+              <span className="w-8 h-[1px] bg-[#A594D0]" aria-hidden="true" />
+              <span className="font-mono text-[11px] sm:text-[12px] tracking-[0.26em] uppercase text-[#A594D0]">
+                ESTABLISHED 2001
+              </span>
+            </div>
+
+            {/* Giant Title: Line 1 "Faith" (upright white), Line 2 "For Women" (italic silvery-lavender) */}
+            <h1 className="flex flex-col tracking-tight text-balance mb-5 sm:mb-8">
+              <span
+                className="text-[52px] xs:text-[64px] sm:text-[84px] md:text-[98px] lg:text-[112px] xl:text-[120px] font-serif font-normal text-white leading-[0.92] tracking-tight block"
+                style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+              >
+                Faith
+              </span>
+              <span
+                className="text-[52px] xs:text-[64px] sm:text-[84px] md:text-[98px] lg:text-[112px] xl:text-[120px] font-serif italic font-normal text-[#C5BFD6] leading-[0.94] tracking-tight -mt-1 xs:mt-0 sm:mt-1 block"
+                style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+              >
+                For Women
+              </span>
             </h1>
 
-            {/* Supporting paragraph: Warm Ivory readable measure */}
-            <p className="text-[15px] xs:text-[16px] sm:text-[17px] lg:text-[18px] leading-[1.68] font-normal text-[#FBF8F3]/90 max-w-xl mx-auto mb-8 sm:mb-10 font-sans text-center">
-              A place of faith, growth and encouragement for women, created to
-              help you walk through every season with God.
-            </p>
+            {/* Exact Lead Prose from Variation 11 */}
+            <div className="text-[15px] sm:text-[17px] lg:text-[18px] leading-[1.65] text-[#A59EBA] max-w-xl font-sans mb-10 sm:mb-12">
+              <p>A sanctuary for spiritual growth and encouragement.</p>
+              <p className="mt-1 text-[#948DA7]">
+                We walk with you through every season, rooted in grace and purposeful calling.
+              </p>
+            </div>
 
-            {/* CTA Group: Responsive stack on mobile, horizontal row on sm+ */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto">
-              {/* Primary CTA button: Royal Indigo gradient */}
-              <button
-                type="button"
-                onClick={onExploreClick}
-                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center px-7 py-3.5 rounded-[6px] text-[15px] font-medium tracking-normal transition-all duration-300 border shadow-md hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98]"
-                style={{
-                  background: 'linear-gradient(135deg, #5964D8 0%, #444FC0 100%)',
-                  color: '#FFFFFF',
-                  borderColor: '#7C84E8',
-                  boxShadow: '0 8px 24px -2px rgba(89, 100, 216, 0.52), 0 2px 8px rgba(0, 0, 0, 0.35)',
-                  outlineColor: '#5964D8',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #444FC0 0%, #353FA8 100%)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #5964D8 0%, #444FC0 100%)';
-                }}
+            {/* Bottom Actions Row */}
+            <div className="flex items-center gap-8 sm:gap-10 pt-2">
+              {/* Primary: "Explore the Ministry" with prominent lilac underline */}
+              <a
+                href="#about"
+                onClick={handleExploreClick}
+                className="group relative inline-flex items-center text-[15px] sm:text-[16px] font-sans font-medium text-white pb-2 transition-colors focus-visible:outline-2 rounded-sm"
               >
-                Explore HECWODEM
-              </button>
+                <span>Explore the Ministry</span>
+                <span
+                  className="absolute bottom-0 left-0 w-full h-[2px] bg-[#C4A7FB] shadow-[0_0_12px_rgba(196,167,251,0.85)] group-hover:bg-white transition-colors"
+                  aria-hidden="true"
+                />
+              </a>
 
-              {/* Secondary editorial text link: Warm Ivory with Lucide ArrowRight transition */}
+              {/* Secondary: "FOUNDER STORY →" in tracked uppercase mono */}
               <a
                 href="#about-founder"
-                onClick={(e) => {
-                  if (onMeetFounderClick) {
-                    e.preventDefault();
-                    onMeetFounderClick();
-                  }
-                }}
-                className="group inline-flex items-center justify-center min-h-[44px] gap-2 px-3 py-2 text-[15px] font-medium text-[#FBF8F3] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
-                style={{
-                  outlineColor: '#5964D8',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#7C84E8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#FBF8F3';
-                }}
+                onClick={handleFounderClick}
+                className="group inline-flex items-center gap-2 font-mono text-[11px] sm:text-[12px] tracking-[0.22em] uppercase text-[#A594D0] hover:text-white transition-colors py-2 focus-visible:outline-2 rounded-sm"
               >
-                <span className="relative">
-                  Meet the Founder
-                  <span
-                    className="absolute bottom-0 left-0 w-0 h-[1px] group-hover:w-full transition-all duration-300"
-                    style={{ backgroundColor: '#7C84E8' }}
-                  />
-                </span>
+                <span>FOUNDER STORY</span>
                 <ArrowRight
-                  className="w-4 h-4 transform group-hover:translate-x-1.5 transition-all duration-200"
-                  style={{ color: '#7C84E8' }}
-                  strokeWidth={2}
+                  className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform"
                   aria-hidden="true"
                 />
               </a>
             </div>
           </div>
-        ) : (
-          /* Split layout fallback */
-          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-            <div className="lg:col-span-8 xl:col-span-7 flex flex-col items-start text-left animate-hero-entrance">
-              <h1
-                className="text-[44px] leading-[1.05] sm:text-[58px] lg:text-[72px] font-serif font-normal text-[#FBF8F3] tracking-tight mb-5 sm:mb-6 text-balance"
-                style={{
-                  fontFamily: "'Instrument Serif', Georgia, serif",
-                  lineHeight: 1.05,
-                }}
-              >
-                Welcome to HECWODEM
-              </h1>
 
-              <p className="text-[15px] sm:text-[17px] leading-[1.68] font-normal text-[#FBF8F3]/90 max-w-xl mb-8 sm:mb-10 font-sans">
-                A place of faith, growth and encouragement for women, created to
-                help you walk through every season with God.
-              </p>
+          {/* -----------------------------------------------------
+              RIGHT COLUMN: ARCHITECTURAL B.T. ADESOPE CARD
+          ------------------------------------------------------ */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="w-full max-w-[360px] sm:max-w-[420px] lg:max-w-[440px] border border-[#2D2545] rounded-[4px] bg-[#120F1F]/70 backdrop-blur-md p-5 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative group">
+              {/* Subtle ambient back-glow behind card */}
+              <div
+                aria-hidden="true"
+                className="absolute -inset-1 rounded-[6px] bg-gradient-to-b from-[#C4A7FB]/15 via-transparent to-transparent opacity-60 blur-md pointer-events-none"
+              />
 
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={onExploreClick}
-                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center px-7 py-3.5 rounded-[6px] text-[15px] font-medium tracking-normal transition-all duration-300 border shadow-md hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98]"
-                  style={{
-                    background: 'linear-gradient(135deg, #5964D8 0%, #444FC0 100%)',
-                    color: '#FFFFFF',
-                    borderColor: '#7C84E8',
-                    boxShadow: '0 8px 24px -2px rgba(89, 100, 216, 0.52), 0 2px 8px rgba(0, 0, 0, 0.35)',
-                    outlineColor: '#5964D8',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                    e.currentTarget.style.background = 'linear-gradient(135deg, #444FC0 0%, #353FA8 100%)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.background = 'linear-gradient(135deg, #5964D8 0%, #444FC0 100%)';
-                  }}
+              {/* Upper Box: Moody Portrait Frame with subtle monochrome/violet tone */}
+              <div className="relative w-full h-[280px] xs:h-[320px] sm:h-[360px] lg:h-[380px] overflow-hidden rounded-[2px] border border-[#2D2545]/80 bg-[#0A0912]">
+                <img
+                  src={photoSrc}
+                  alt={photoAlt}
+                  loading="eager"
+                  className="w-full h-full object-cover object-top filter grayscale-[25%] contrast-[1.08] brightness-[0.92] group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                />
+
+                {/* Editorial Vignette & Deep Violet Wash */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-[#120F1F] via-[#120F1F]/25 to-transparent pointer-events-none"
+                />
+
+                {/* Subtle centered attribution watermark matching Variation 11 */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
                 >
-                  Explore HECWODEM
-                </button>
-
-                <a
-                  href="#about-founder"
-                  onClick={(e) => {
-                    if (onMeetFounderClick) {
-                      e.preventDefault();
-                      onMeetFounderClick();
-                    }
-                  }}
-                  className="group inline-flex items-center justify-center min-h-[44px] gap-2 px-3 py-2 text-[15px] font-medium text-[#FBF8F3] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
-                  style={{
-                    outlineColor: '#5964D8',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#7C84E8';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#FBF8F3';
-                  }}
-                >
-                  <span className="relative">
-                    Meet the Founder
-                    <span
-                      className="absolute bottom-0 left-0 w-0 h-[1px] group-hover:w-full transition-all duration-300"
-                      style={{ backgroundColor: '#7C84E8' }}
-                    />
+                  <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.28em] uppercase text-white/30 text-center px-4">
+                    B.T. ADESOPE — FOUNDER
                   </span>
-                  <ArrowRight
-                    className="w-4 h-4 transform group-hover:translate-x-1.5 transition-all duration-200"
-                    style={{ color: '#7C84E8' }}
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
-                </a>
+                </div>
+              </div>
+
+              {/* Lower Section: Visionary Meta & Bio */}
+              <div className="pt-6 text-left">
+                {/* Eyebrow: THE VISIONARY */}
+                <div className="flex items-center gap-2 mb-2.5">
+                  <span className="w-5 h-[1px] bg-[#C4A7FB]" aria-hidden="true" />
+                  <span className="font-mono text-[11px] tracking-[0.24em] uppercase text-[#C4A7FB]">
+                    THE VISIONARY
+                  </span>
+                </div>
+
+                {/* Founder Name in Instrument Serif */}
+                <h2
+                  className="text-[32px] sm:text-[38px] font-serif font-normal text-white tracking-tight mb-2.5"
+                  style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+                >
+                  B.T. Adesope
+                </h2>
+
+                {/* Exact Bio copy from Variation 11 */}
+                <p className="text-[13px] sm:text-[14px] leading-[1.65] text-[#9B94B0] font-sans">
+                  A life dedicated to the development of women through profound spiritual
+                  transformation and practical leadership empowerment.
+                </p>
               </div>
             </div>
-            <div className="hidden lg:block lg:col-span-4 xl:col-span-5 pointer-events-none" aria-hidden="true" />
           </div>
-        )}
+
+        </div>
       </div>
 
       {/* =========================================================
-          LAYER 3: SCROLL INDICATOR (z-20)
+          LAYER 3: BOTTOM HERO STATUS STRIP (DEDICATED MOBILE-RESPONSIVE TICKER)
       ========================================================== */}
-      <div className="relative z-20 w-full flex justify-center pb-4 sm:pb-6 lg:pb-8">
+      <div className="relative z-20 w-full max-w-full overflow-hidden border-t border-b border-[#2D2545]/60 bg-[#08070E]/85 backdrop-blur-md py-2.5 sm:py-3.5 select-none touch-pan-y">
+        <div className="relative w-full max-w-full overflow-hidden ticker-mask">
+          <div className="animate-marquee-scroll flex items-center whitespace-nowrap">
+            {/* Track 1 */}
+            <div className="flex items-center shrink-0">
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#C4A7FB] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                AFRICA / INTERCESSION / GROWTH
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#A594D0] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                HEPHZIBAH CHRISTIAN WOMEN DEVELOPMENT MINISTRY
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#C4A7FB] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                AFRICA / INTERCESSION / GROWTH
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#A594D0] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                HEPHZIBAH CHRISTIAN WOMEN DEVELOPMENT MINISTRY
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+            </div>
+
+            {/* Track 2 (Duplicate for continuous seamless loop) */}
+            <div className="flex items-center shrink-0" aria-hidden="true">
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#C4A7FB] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                AFRICA / INTERCESSION / GROWTH
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#A594D0] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                HEPHZIBAH CHRISTIAN WOMEN DEVELOPMENT MINISTRY
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#C4A7FB] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                AFRICA / INTERCESSION / GROWTH
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+              <span className="font-mono text-[10px] xs:text-[11px] sm:text-[12px] tracking-[0.2em] sm:tracking-[0.24em] text-[#A594D0] uppercase font-medium px-4 xs:px-6 sm:px-10">
+                HEPHZIBAH CHRISTIAN WOMEN DEVELOPMENT MINISTRY
+              </span>
+              <span className="text-[#C4A7FB]/40 select-none text-[10px] font-mono px-1 sm:px-2" aria-hidden="true">
+                //
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Subtle floating down indicator */}
+      <div className="relative z-20 w-full flex justify-center pb-2 pt-1">
         <ScrollIndicator
           label="Scroll"
           onClick={handleScrollClick}
-          accentBorder="#5964D8"
-          accentText="#7C84E8"
+          accentBorder="#C4A7FB"
+          accentText="#C4A7FB"
         />
       </div>
     </section>

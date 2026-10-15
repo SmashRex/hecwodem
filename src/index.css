@@ -4,20 +4,36 @@
   /* =========================================================================
      OFFICIAL HECWODEM DESIGN SYSTEM TOKENS (Source of Truth)
      ========================================================================= */
-  /* Primary & Foundations: Working Palette Royal Indigo */
-  --color-royal-indigo: #25265C;
-  --color-secondary-indigo: #343777;
-  --color-royal-indigo-accent: #5964D8;
-  --color-soft-indigo-accent: #7C84E8;
+  /* Primary & Foundations: Dark Violet & Lilac from Variation 11 */
+  --color-canvas-dark: #0C0B14;
+  --color-canvas-deep: #121020;
+  --color-canvas-surface: #171528;
+  --color-lilac-accent: #C4A7FB;
+  --color-lilac-light: #DDD0FD;
+  --color-lilac-muted: #A594D0;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #C5BFD6;
+  --color-text-muted: #948DA7;
+  --color-border-subtle: #2D2545;
   --color-warm-ivory: #FBF8F3;
-  --color-feminine-accent: #D09AA5;
-  --color-champagne: #C7A76A;
 
-  /* Supporting design-system colours */
-  --color-soft-ink: #263238;
-  --color-warm-taupe: #6F6968;
-  --color-soft-border: #DED8D3;
-  --color-pale-blue: #EAF5F8;
+  /* Warm Champagne Accent for hairline rules, numerals & subtle micro-accents */
+  --color-champagne: #C7A76A;
+  --color-champagne-light: #DFC28D;
+  --color-champagne-dark: #A6864B;
+
+  /* Legacy aliases mapped to new tokens */
+  --color-deep-slate: #0C0B14;
+  --color-deep-slate-dark: #121020;
+  --color-deep-slate-deep: #08070E;
+  --color-powder-blue: #C4A7FB;
+  --color-powder-blue-light: #DDD0FD;
+  --color-powder-blue-dark: #A594D0;
+  --color-royal-indigo: #0C0B14;
+  --color-secondary-indigo: #171528;
+  --color-royal-indigo-accent: #52327A;
+  --color-soft-indigo-accent: #A594D0;
+  --color-feminine-accent: #C4A7FB;
 
   /* Typography */
   --font-serif: 'Instrument Serif', Georgia, serif;
@@ -39,8 +55,8 @@
   --spacing-touch-target: 44px;
 
   /* Shadows */
-  --shadow-subtle: 0 4px 20px -4px rgba(37, 38, 92, 0.08);
-  --shadow-medium: 0 12px 36px -12px rgba(37, 38, 92, 0.18);
+  --shadow-subtle: 0 4px 20px -4px rgba(41, 75, 89, 0.08);
+  --shadow-medium: 0 12px 36px -12px rgba(41, 75, 89, 0.18);
 
   /* Transitions & Motion */
   --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
@@ -48,20 +64,30 @@
 
 @layer base {
   :root {
-    /* Royal Indigo Working Palette Tokens */
-    --royal-indigo: #25265C;
-    --secondary-indigo: #343777;
-    --royal-indigo-accent: #5964D8;
-    --soft-indigo-accent: #7C84E8;
+    --canvas-dark: #0C0B14;
+    --canvas-deep: #121020;
+    --canvas-surface: #171528;
+    --lilac-accent: #C4A7FB;
+    --lilac-light: #DDD0FD;
+    --lilac-muted: #A594D0;
+    --text-primary: #FFFFFF;
+    --text-secondary: #C5BFD6;
+    --text-muted: #948DA7;
+    --border-subtle: #2D2545;
     --warm-ivory: #FBF8F3;
-    --feminine-accent: #D09AA5;
-    --champagne: #C7A76A;
 
-    /* Supporting design-system tokens */
-    --soft-ink: #263238;
-    --warm-taupe: #6F6968;
-    --soft-border: #DED8D3;
-    --pale-blue: #EAF5F8;
+    --champagne: #C7A76A;
+    --champagne-light: #DFC28D;
+    --champagne-dark: #A6864B;
+
+    /* Legacy CSS Variable Compatibility */
+    --deep-slate: #0C0B14;
+    --powder-blue: #C4A7FB;
+    --royal-indigo: #0C0B14;
+    --secondary-indigo: #171528;
+    --royal-indigo-accent: #52327A;
+    --soft-indigo-accent: #A594D0;
+    --feminine-accent: #C4A7FB;
 
     /* Responsive Gutters & Ergonomics */
     --gutter-mobile: 16px;
@@ -74,8 +100,8 @@
 
   html {
     font-family: var(--font-sans);
-    color: var(--warm-ivory);
-    background-color: var(--royal-indigo);
+    color: var(--text-primary);
+    background-color: #0C0B14;
     scroll-behavior: smooth;
   }
 
@@ -84,8 +110,8 @@
     padding: 0;
     min-height: 100vh;
     overflow-x: hidden;
-    background-color: var(--royal-indigo);
-    color: var(--warm-ivory);
+    background-color: #0C0B14;
+    color: #FFFFFF;
   }
 }
 
@@ -101,6 +127,53 @@
 
 .animate-subtle-bounce {
   animation: subtle-bounce 2.6s ease-in-out infinite;
+}
+
+/* Seamless infinite marquee scrolling (like Relume ticker) with fluid mobile motion */
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-scroll {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 26s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.animate-marquee-scroll:hover,
+.animate-marquee-scroll:active {
+  animation-play-state: paused;
+}
+
+@media (max-width: 640px) {
+  .animate-marquee-scroll {
+    animation-duration: 20s;
+  }
+}
+
+.ticker-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 7%,
+    black 93%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 7%,
+    black 93%,
+    transparent 100%
+  );
 }
 
 /* Subtle editorial entrance animations */

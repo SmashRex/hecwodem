@@ -30,8 +30,8 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   counsellingLabel,
   onCounsellingClick,
   onNavigate,
-  accentText = '#7C84E8',
-  accentBorder = '#5964D8',
+  accentText = '#C4A7FB',
+  accentBorder = '#C4A7FB',
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -150,17 +150,17 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
         onClick={onClose}
       />
 
-      {/* Slide-in drawer with Royal Indigo styling and restrained width */}
+      {/* Slide-in drawer with dark violet styling and restrained width */}
       <div
-        className="relative z-10 w-full max-w-[340px] xs:max-w-[360px] sm:max-w-[380px] h-full flex flex-col justify-between bg-[#25265C] border-l border-[#5964D8]/20 shadow-2xl text-[#FBF8F3] overflow-y-auto"
-        style={{ backgroundColor: '#25265C' }}
+        className="relative z-10 w-full max-w-[340px] xs:max-w-[360px] sm:max-w-[380px] h-full flex flex-col justify-between bg-[#0C0B14] border-l border-[#C4A7FB]/20 shadow-2xl text-white overflow-y-auto"
+        style={{ backgroundColor: '#0C0B14' }}
       >
         {/* Top bar with wordmark & accessible close control */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[#FBF8F3]/10 shrink-0">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-white/10 shrink-0">
           <a
             href={isStoryPage ? '/' : '#home'}
             onClick={handleWordmarkClick}
-            className="font-serif text-2xl tracking-normal text-[#FBF8F3] hover:text-[#7C84E8] transition-colors focus-visible:outline-2 rounded-sm"
+            className="font-serif text-2xl tracking-normal text-white hover:text-[#C4A7FB] transition-colors focus-visible:outline-2 rounded-sm"
             style={{ fontFamily: "'Instrument Serif', Georgia, serif", outlineColor: accentBorder }}
           >
             HECWODEM
@@ -170,7 +170,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close navigation menu"
-            className="p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#FBF8F3] hover:text-[#7C84E8] hover:bg-white/5 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-white hover:text-[#C4A7FB] hover:bg-white/5 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{ outlineColor: accentBorder }}
           >
             <X className="w-5 h-5" strokeWidth={2} aria-hidden="true" />
@@ -189,10 +189,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                   <a
                     href={linkHref}
                     onClick={(e) => handleLinkClick(e, item.href)}
-                    className={`block py-2.5 px-3 text-[17px] font-medium font-sans tracking-normal rounded-md transition-all focus-visible:outline-2 ${
+                    className={`block py-2.5 px-3 text-[15px] font-mono tracking-[0.16em] uppercase rounded-md transition-all focus-visible:outline-2 ${
                       isHomeActive
-                        ? 'text-[#7C84E8] bg-white/5'
-                        : 'text-[#FBF8F3]/90 hover:text-[#FBF8F3] hover:bg-white/5'
+                        ? 'text-[#C4A7FB] bg-white/5 font-semibold'
+                        : 'text-[#948DA7] hover:text-white hover:bg-white/5'
                     }`}
                     style={{
                       outlineColor: accentBorder,
@@ -207,17 +207,15 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
         </nav>
 
         {/* Primary CTA in mobile drawer */}
-        <div className="p-6 border-t border-[#FBF8F3]/10 bg-[#1A1B44]/70 shrink-0">
+        <div className="p-6 border-t border-white/10 bg-[#121020] shrink-0">
           <button
             type="button"
             onClick={() => {
               onClose();
               onCounsellingClick?.();
             }}
-            className="w-full py-3.5 px-6 min-h-[44px] rounded-[6px] text-white text-[14px] font-medium tracking-normal transition-all duration-300 border shadow-md active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="w-full py-3 px-6 min-h-[44px] rounded-[4px] text-[#120E22] bg-[#C4A7FB] hover:bg-[#DDD0FD] text-[13px] font-semibold font-mono tracking-wider transition-all duration-200 shadow-md active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{
-              background: 'linear-gradient(135deg, #5964D8 0%, #444FC0 100%)',
-              borderColor: '#7C84E8',
               outlineColor: accentBorder,
             }}
           >

@@ -95,20 +95,29 @@ export default function App() {
 
   return (
     <main
-      className="min-h-screen bg-[#25265C] text-[#FBF8F3]"
+      className="min-h-screen bg-[#0C0B14] text-white"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
     >
       {/* 
         Section 01: "Welcome to HECWODEM"
-        Refined opening visual experience in Royal Indigo.
+        Refined opening visual experience in Deep Slate & Powder Blue with founder photography.
       */}
       <HeroSection
+        photoSrc="/images/hero-founder.jpg"
+        photoAlt="B.T. Adesope, founder of HECWODEM"
         logoSrc={customLogoSrc || '/images/hecwodem-logo.svg'}
-        watermarkOpacity={0.10}
+        watermarkOpacity={0.08}
         watermarkOpacityMobile={0}
-        layoutVariant="centered"
-        onExploreClick={() => showToast('Section 01: "Explore HECWODEM" clicked')}
+        layoutVariant="split"
+        onExploreClick={() => {
+          const aboutEl = document.getElementById('about');
+          if (aboutEl) {
+            aboutEl.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            showToast('Section 01: "Explore HECWODEM" clicked');
+          }
+        }}
         onMeetFounderClick={scrollToFounder}
         onScrollClick={scrollToFounder}
         onBookCounsellingClick={() => showToast('Section 01: "Book Counselling" clicked')}

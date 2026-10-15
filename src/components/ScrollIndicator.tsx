@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { ChevronDown } from 'lucide-react';
 
 export interface ScrollIndicatorProps {
   label?: string;
@@ -15,15 +16,15 @@ export interface ScrollIndicatorProps {
 export const ScrollIndicator: React.FC<ScrollIndicatorProps> = ({
   label = 'Scroll',
   onClick,
-  accentBorder = '#5964D8',
-  accentText = '#7C84E8',
+  accentBorder = '#C4A7FB',
+  accentText = '#C4A7FB',
 }) => {
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-label="Scroll down"
-      className="group inline-flex flex-col items-center gap-2 transition-colors focus-visible:outline-2 rounded-sm py-2 px-3 min-h-[44px]"
+      aria-label="Scroll to Meet the Founder section"
+      className="group inline-flex flex-col items-center gap-1.5 transition-colors focus-visible:outline-2 rounded-sm py-2 px-3 min-h-[44px]"
       style={{
         outlineColor: accentBorder,
       }}
@@ -34,20 +35,17 @@ export const ScrollIndicator: React.FC<ScrollIndicatorProps> = ({
       >
         {label}
       </span>
-      {/* Subtle line capsule indicator with active variant border & dot */}
+      {/* SVG Down-Chevron Indicator with subtle bounce and glow */}
       <div
-        className="w-5 h-8 rounded-full border flex items-start justify-center p-1.5 transition-all duration-300"
+        className="w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300 group-hover:translate-y-1"
         style={{
-          borderColor: accentBorder,
-          boxShadow: `0 0 12px ${accentBorder}40`,
+          color: accentText,
         }}
       >
-        <div
-          className="w-1.5 h-2.5 rounded-full animate-subtle-bounce transition-colors duration-300"
-          style={{
-            backgroundColor: accentText,
-            boxShadow: `0 0 8px ${accentBorder}`,
-          }}
+        <ChevronDown
+          className="w-4 h-4 animate-subtle-bounce"
+          strokeWidth={2.2}
+          aria-hidden="true"
         />
       </div>
     </button>

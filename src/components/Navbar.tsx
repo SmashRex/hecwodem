@@ -20,24 +20,21 @@ export interface NavbarProps {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Writings', href: '#writings' },
-  { label: 'Teachings', href: '#teachings' },
-  { label: 'Books', href: '#books' },
-  { label: 'Resources', href: '#resources' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'HOME', href: '#home' },
+  { label: 'ABOUT', href: '#about' },
+  { label: 'OUR WORK', href: '#what-we-do' },
+  { label: 'WRITINGS', href: '#writings' },
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({
   onCounsellingClick,
   onNavigate,
-  accentText = '#7C84E8',
-  accentBorder = '#5964D8',
-  activeDotColor = '#7C84E8',
-  ctaBg = 'rgba(89, 100, 216, 0.20)',
-  ctaBorder = '#5964D8',
-  ctaGlow = 'rgba(89, 100, 216, 0.38)',
+  accentText = '#C4A7FB',
+  accentBorder = '#C4A7FB',
+  activeDotColor = '#C4A7FB',
+  ctaBg = '#C4A7FB',
+  ctaBorder = '#C4A7FB',
+  ctaGlow = 'rgba(196, 167, 251, 0.45)',
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -89,22 +86,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="relative z-50 w-full transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-5 lg:py-6 flex items-center justify-between">
-        {/* Left: HECWODEM Wordmark (Instrument Serif text-based) */}
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-5 sm:py-6 flex items-center justify-between">
+        {/* Left: HECWODEM Wordmark (Instrument Serif text-based matching Variation 11) */}
         <div className="flex-shrink-0">
           <a
             href={isStoryPage ? '/' : '#home'}
             onClick={handleWordmarkClick}
-            className="text-2xl sm:text-3xl font-serif tracking-tight text-[#FBF8F3] transition-colors focus-visible:outline-2 rounded-sm"
+            className="text-2xl sm:text-3xl font-serif tracking-normal text-white transition-colors focus-visible:outline-2 rounded-sm"
             style={{
               fontFamily: "'Instrument Serif', Georgia, serif",
               outlineColor: accentBorder,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = accentText;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = '#FBF8F3';
             }}
             aria-label="HECWODEM Home"
           >
@@ -112,10 +103,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </a>
         </div>
 
-        {/* Center/Right Desktop Navigation Links (shown only at lg+ to avoid tablet cramping) */}
+        {/* Center Desktop Navigation Links (Monospace tracked uppercase matching Variation 11) */}
         <nav
           aria-label="Primary Navigation"
-          className="hidden lg:flex items-center space-x-6 xl:space-x-8"
+          className="hidden md:flex items-center space-x-7 lg:space-x-10"
         >
           {NAV_ITEMS.map((item) => {
             const isHome = !isStoryPage && item.href === '#home';
@@ -127,8 +118,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 href={linkHref}
                 onClick={(e) => handleNavClick(e, item.href)}
                 className={`
-                  relative text-[14px] tracking-wide transition-colors focus-visible:outline-2 rounded-sm whitespace-nowrap py-1
-                  ${isHome ? 'text-[#FBF8F3] font-medium' : 'text-[#FBF8F3]/80 font-normal hover:text-[#FBF8F3]'}
+                  relative font-mono text-[11px] lg:text-[12px] tracking-[0.22em] transition-colors focus-visible:outline-2 rounded-sm whitespace-nowrap py-1
+                  ${isHome ? 'text-white font-medium' : 'text-[#948DA7] hover:text-white'}
                 `}
                 style={{
                   outlineColor: accentBorder,
@@ -137,8 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{item.label}</span>
                 {isHome && (
                   <span
-                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full transition-colors duration-300"
-                    style={{ backgroundColor: activeDotColor }}
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#C4A7FB]"
                     aria-hidden="true"
                   />
                 )}
@@ -147,25 +137,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </nav>
 
-        {/* Far Right: "Book Counselling" Primary CTA Treatment (Desktop lg+) */}
-        <div className="hidden lg:flex items-center flex-shrink-0 pl-4">
+        {/* Far Right: "Book Counselling" Lilac Solid Button (matching Variation 11) */}
+        <div className="hidden md:flex items-center flex-shrink-0 pl-4">
           <button
             type="button"
             onClick={onCounsellingClick}
-            className="px-5 py-2.5 min-h-[40px] rounded-[6px] text-[#FBF8F3] text-[14px] font-medium tracking-normal transition-all duration-300 border shadow-sm hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 whitespace-nowrap active:scale-[0.98]"
+            className="px-5 py-2.5 min-h-[38px] rounded-[4px] text-[#120E22] bg-[#C4A7FB] hover:bg-[#DDD0FD] text-[12px] lg:text-[13px] font-semibold font-mono tracking-wider transition-all duration-200 shadow-[0_0_24px_rgba(196,167,251,0.35)] hover:shadow-[0_0_30px_rgba(196,167,251,0.5)] focus-visible:outline-2 focus-visible:outline-offset-2 whitespace-nowrap active:scale-[0.98]"
             style={{
-              backgroundColor: ctaBg || 'rgba(89, 100, 216, 0.20)',
-              borderColor: ctaBorder || accentBorder,
-              boxShadow: ctaGlow ? `0 0 16px ${ctaGlow}` : undefined,
-              outlineColor: accentBorder,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = accentText;
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = ctaBorder || accentBorder;
-              e.currentTarget.style.transform = 'translateY(0)';
+              outlineColor: '#C4A7FB',
             }}
           >
             Book Counselling
@@ -173,13 +152,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile & Tablet Right: Hamburger Icon Control */}
-        <div className="flex lg:hidden items-center">
+        <div className="flex md:hidden items-center">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open navigation menu"
             aria-expanded={mobileMenuOpen}
-            className="p-2 -mr-1 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#FBF8F3] hover:text-[#7C84E8] hover:bg-white/5 active:bg-white/10 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="p-2 -mr-1 min-h-[44px] min-w-[44px] flex items-center justify-center text-white hover:text-[#C4A7FB] hover:bg-white/5 active:bg-white/10 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{ outlineColor: accentBorder }}
           >
             <Menu className="w-6 h-6" strokeWidth={2} aria-hidden="true" />
